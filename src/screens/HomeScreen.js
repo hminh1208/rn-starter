@@ -4,7 +4,6 @@ import { Text, StyleSheet, View, Button, TouchableOpacity } from "react-native";
 const HomeScreen = (props) => {
     return (
         <View>
-
             <Button
                 style={styles.button}
                 onPress={() => props.navigation.navigate("Components")}
@@ -41,12 +40,17 @@ const HomeScreen = (props) => {
                 title="Go to the Square Screen"
             />
 
-<Button
+            <Button
                 style={styles.button}
                 onPress={() => props.navigation.navigate("Text")}
                 title="Go to the Text Screen"
             />
 
+            <Button
+                style={styles.button}
+                onPress={() => props.navigation.navigate("Box")}
+                title="Go to the Box Screen"
+            />
         </View>
     );
 };

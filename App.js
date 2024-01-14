@@ -11,26 +11,29 @@ import LoginScreen from "./src/screens/Auth/LoginScreen";
 import SignUpScreen from "./src/screens/Auth/SignupScreen";
 import SquareScreen from "./src/screens/SquareScreen";
 import TextScreen from "./src/screens/TextScreen";
+import BoxScreen from "./src/screens/BoxScreen";
 
 const navigator = createStackNavigator(
-  {
-    Home: HomeScreen,
-    Components: ComponentsScreen,
-    List: ListScreen,
-    Image: ImageScreen,
-    Count: CounterScreen,
-    Color: ColorScreen,
-    Login: LoginScreen,
-    Signup: SignUpScreen,
-    Square: SquareScreen,
-    Text: TextScreen,
-  },
-  {
-    initialRouteName: "Home",
-    defaultNavigationOptions: {
-      title: "Tracking Expense",
+    {
+        Home: HomeScreen,
+        Components: ComponentsScreen,
+        List: ListScreen,
+        Image: ImageScreen,
+        Count: CounterScreen,
+        Color: ColorScreen,
+        Login: LoginScreen,
+        Signup: SignUpScreen,
+        Square: SquareScreen,
+        Text: TextScreen,
+
+        Box: BoxScreen,
     },
-  }
+    {
+        initialRouteName: "Home",
+        defaultNavigationOptions: {
+            title: "Tracking Expense",
+        },
+    }
 );
 
 export default createAppContainer(navigator);
