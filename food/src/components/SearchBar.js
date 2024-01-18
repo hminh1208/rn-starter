@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         flexDirection: "row",
         verticalAlign: "center",
+        marginHorizontal: 15
     },
     icon: {
         alignSelf: "center",
