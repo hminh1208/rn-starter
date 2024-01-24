@@ -1,10 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Context as BlogContext } from "../context/BlogContext";
 import { Feather } from '@expo/vector-icons'
 
 const IndexScreen = ({ navigation }) => {
-    const { state, deleteBlogPost } = useContext(BlogContext);
+    const { state, getBlogPosts, deleteBlogPost } = useContext(BlogContext);
+
+    useEffect(() => {
+        getBlogPosts();
+
+        const listener = navigation.addListener('didFocus', () => {
+            getBlogPosts();
+        });
+
+        return () => {
+            listener.remove();
+        };
+    }, []);
 
     if (state.length > 0) {
         return (<View>
@@ -18,7 +30,9 @@ const IndexScreen = ({ navigation }) => {
                         <TouchableOpacity onPress={() => navigation.navigate('Show', { id: item.id })}>
                             <View style={styles.row}>
                                 <Text style={styles.title}>{item.title}</Text>
-                                <Text style={styles.title}>{item.content}</Text>
+
+                                <Text style={styles.content}>{item.content}</Text>
+
                                 <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
                                     <Feather name="trash" style={styles.icon} />
                                 </TouchableOpacity>
@@ -51,7 +65,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 10,
         borderColor: 'grey',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
     },
     icon: {
         fontSize: 24,
@@ -61,7 +75,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 10
+    },
+    content: {
+        fontSize: 18,
+        textAlign: 'center',
     }
 });
 
