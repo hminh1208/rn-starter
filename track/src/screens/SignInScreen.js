@@ -21,7 +21,7 @@ const SignInScreen = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { state, signup } = useContext(AuthContext);
+    const { state, signin } = useContext(AuthContext);
 
     return (
         <>
@@ -54,13 +54,13 @@ const SignInScreen = ({ navigation }) => {
                 <Spacer >
                     <Button
                         title='Sign In'
-                        onPress={() => signup({ email, password })} />
+                        onPress={() => signin({ email, password })} />
                 </Spacer>
 
                 <Spacer >
                     <TouchableOpacity
                         onPress={() => navigation.navigate('SignUp')} >
-                        <Text style={{ fontSize: 16, color: 'blue', textAlign: 'center' }}>Don't have an account? Sign In instead</Text>
+                        <Text style={{ fontSize: 16, color: 'blue', textAlign: 'center' }}>Don't have an account? Sign Up instead</Text>
                     </TouchableOpacity>
                 </Spacer>
             </View>

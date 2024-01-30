@@ -1,8 +1,10 @@
+import * as React from 'react';
 import {
   useEffect,
   useState,
 } from 'react';
 
+import { Root as PopupRootProvider } from 'react-native-popup-confirm-toast';
 import MaterialCommunityIcons
   from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -17,6 +19,7 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as CategoryProvider } from './src/context/CategoryContext';
 import { setNavigator } from './src/navigationRef';
 import AccountScreen from './src/screens/AccountScreen';
+import CategoryScreen from './src/screens/CategoryScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
@@ -38,60 +41,82 @@ export default function App() {
 		})
 	}, [])
 
+	const DashboardStack = createStackNavigator();
+	function DashboardTab() {
+		return <DashboardStack.Navigator screenOptions={{
+			headerShown: false
+		}}>
+			<Stack.Screen name="Home" component={HomeScreen} />
+			<Stack.Screen name="Category" component={CategoryScreen} />
+			<Stack.Screen name="Transaction" component={TransactionSceen} />
+		</DashboardStack.Navigator>
+	}
+
+	function Home() {
+		return <Tab.Navigator>
+			<Tab.Screen
+				name="Dashboard"
+				component={DashboardTab}
+				options={{
+					tabBarLabel: 'Home',
+					tabBarIcon: ({ color }) => (
+						<MaterialCommunityIcons name="home" color={color} size={26} />
+					),
+				}} />
+
+			<Tab.Screen
+				name="Transaction"
+				component={TransactionSceen}
+				options={{
+					tabBarLabel: 'Transactions',
+					tabBarIcon: ({ color }) => (
+						<MaterialCommunityIcons name="format-list-bulleted" color={color} size={26} />
+					),
+				}} />
+			<Tab.Screen
+				name="Account"
+				component={AccountScreen}
+				options={{
+					tabBarLabel: 'Account',
+					tabBarIcon: ({ color }) => (
+						<MaterialCommunityIcons name="account" color={color} size={26} />
+					),
+				}} />
+		</Tab.Navigator>;
+	}
+
 	return (
-		<CategoryProvider>
+		<PopupRootProvider>
 			<AuthProvider>
-				<NavigationContainer ref={(navigator) => { setNavigator(navigator) }}>
-					{session && session.user ?
-						(<>
-							<Tab.Navigator>
-								<Tab.Screen
-									name="HomeScreen"
-									component={HomeScreen}
-									options={{
-										tabBarLabel: 'Home',
-										tabBarIcon: ({ color }) => (
-											<MaterialCommunityIcons name="home" color={color} size={26} />
-										),
-									}} />
-
-								<Tab.Screen
-									name="Transaction"
-									component={TransactionSceen}
-									options={{
-										tabBarLabel: 'Transactions',
-										tabBarIcon: ({ color }) => (
-											<MaterialCommunityIcons name="format-list-bulleted" color={color} size={26} />
-										),
-									}} />
-								<Tab.Screen
-									name="Account"
-									component={AccountScreen}
-									options={{
-										tabBarLabel: 'Account',
-										tabBarIcon: ({ color }) => (
-											<MaterialCommunityIcons name="account" color={color} size={26} />
-										),
-									}} />
-							</Tab.Navigator>
-						</>) :
-						(<>
-							<Stack.Navigator
-								initialRouteName="SignIn"
-								screenOptions={{
-									headerShown: false
-								}}>
-								<Stack.Screen
-									name="SignIn"
-									component={SignInScreen} />
-								<Stack.Screen
-									name="SignUp"
-									component={SignUpScreen} />
-							</Stack.Navigator>
-						</>)}
-				</NavigationContainer>
+				<CategoryProvider>
+					<NavigationContainer ref={(navigator) => { setNavigator(navigator) }}>
+						{session && session.user ?
+							(<>
+								<Stack.Navigator>
+									<Stack.Screen
+										name="Home"
+										component={Home}
+										options={{ headerShown: false }}
+									/>
+								</Stack.Navigator>
+							</>) :
+							(<>
+								<Stack.Navigator
+									initialRouteName="SignIn"
+									screenOptions={{
+										headerShown: false
+									}}>
+									<Stack.Screen
+										name="SignIn"
+										component={SignInScreen} />
+									<Stack.Screen
+										name="SignUp"
+										component={SignUpScreen} />
+								</Stack.Navigator>
+							</>)}
+					</NavigationContainer>
+				</CategoryProvider>
 			</AuthProvider>
-		</CategoryProvider>
-
+		</PopupRootProvider>
 	)
 }

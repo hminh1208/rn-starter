@@ -11,14 +11,17 @@ const authReducer = (state, action) => {
 };
 
 const getCategories = (dispath) => {
-    return async () => {
+    return async (name) => {
         const { data, error } = await supabaseClient
-            .from('categories')
-            .select();
+            .from('Category')
+            .select()
+            .eq('deleted', false);
+
+        console.log(data);
 
         dispath({
             type: "GET_ALL_CATEGORY",
-            payload: { data: data.data, errorMessage: error.message }
+            payload: { data: data ?? [], errorMessage: error?.message }
         });
     }
 }

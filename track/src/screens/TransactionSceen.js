@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Text,
@@ -6,19 +6,16 @@ import {
 } from 'react-native';
 
 import Spacer from '../components/spacer';
-import { Context as CategoryContext } from '../context/CategoryContext';
 
 const TransactionScreen = () => {
-    const { state, getCategories } = useContext(CategoryContext);
-
     useEffect(() => {
-        getCategories();
+        console.log(2222);
     }, []);
 
     return (
         <View>
             <Spacer>
-                <Text>{state.data.length}</Text>
+                <Text>0</Text>
             </Spacer>
         </View>
     )

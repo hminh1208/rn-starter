@@ -16,9 +16,11 @@ const getTransactions = (dispath) => {
             .from('transactions')
             .select();
 
+        console.log(data);
+
         dispath({
             type: "GET_ALL_TRANSACTION",
-            payload: { data: data.data, errorMessage: error.message }
+            payload: { data: data.data, errorMessage: error?.message ?? "" }
         });
     }
 }
