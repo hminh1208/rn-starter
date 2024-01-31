@@ -18,12 +18,14 @@ import supabaseClient from './src/api/SupabaseClient';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as CategoryProvider } from './src/context/CategoryContext';
 import { setNavigator } from './src/navigationRef';
-import AccountScreen from './src/screens/AccountScreen';
-import CategoryScreen from './src/screens/CategoryScreen';
+import AccountScreen from './src/screens/auth/AccountScreen';
+import SignInScreen from './src/screens/auth/SignInScreen';
+import SignUpScreen from './src/screens/auth/SignUpScreen';
+import CategoryScreen from './src/screens/category/CategoryScreen';
+import CreateCategoryScreen from './src/screens/category/CreateCategoryScreen';
+import EditCategoryScreen from './src/screens/category/EditCategoryScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import SignInScreen from './src/screens/SignInScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
-import TransactionSceen from './src/screens/TransactionSceen';
+import TransactionSceen from './src/screens/transaction/TransactionSceen';
 
 export default function App() {
 	const Stack = createStackNavigator();
@@ -48,6 +50,8 @@ export default function App() {
 		}}>
 			<Stack.Screen name="Home" component={HomeScreen} />
 			<Stack.Screen name="Category" component={CategoryScreen} />
+			<Stack.Screen name="EditCategory" component={EditCategoryScreen} options={{ headerShown: true, title: 'Edit category' }} />
+			<Stack.Screen name="CreateCategory" component={CreateCategoryScreen} options={{ headerShown: true, title: 'Create category' }} />
 			<Stack.Screen name="Transaction" component={TransactionSceen} />
 		</DashboardStack.Navigator>
 	}

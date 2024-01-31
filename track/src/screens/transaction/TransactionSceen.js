@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 
-import Spacer from '../components/spacer';
+import Spacer from '../../components/spacer';
 
 const TransactionScreen = () => {
     useEffect(() => {

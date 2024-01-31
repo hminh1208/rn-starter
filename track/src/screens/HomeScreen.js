@@ -13,18 +13,21 @@ import { Text } from 'react-native-elements';
 import Spacer from '../components/spacer';
 import { Context as CategoryContext } from '../context/CategoryContext';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
     const { state, getCategories } = useContext(CategoryContext);
 
     useEffect(() => {
-        getCategories();
-      }, []);
+        const listener = navigation.addListener("focus", () => {
+            getCategories();
+        });
+        return listener;
+    }, []);
 
     return (
         <View style={{ marginTop: 50 }}>
             <Spacer>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={[styles.bgYellow, styles.summaryContainer]} onPress={() => { navigation.push('Category')}}>
+                    <TouchableOpacity style={[styles.bgYellow, styles.summaryContainer]} onPress={() => { navigation.push('Category') }}>
                         <Text h4 style={{ marginTop: 10, marginLeft: 10, color: 'black' }}>Category</Text>
                         <Text h4 style={{ marginRight: 10, color: 'black', textAlign: 'right', position: 'absolute', bottom: 10, right: 0 }}>{state.data.length}</Text>
                     </TouchableOpacity>

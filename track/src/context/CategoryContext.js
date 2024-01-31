@@ -11,12 +11,13 @@ const authReducer = (state, action) => {
 };
 
 const getCategories = (dispath) => {
-    return async (name) => {
+    return async () => {
         const { data, error } = await supabaseClient
             .from('Category')
             .select()
             .eq('deleted', false);
 
+        console.log(error);
         console.log(data);
 
         dispath({
@@ -26,9 +27,42 @@ const getCategories = (dispath) => {
     }
 }
 
+const deleteCategory = (dispath) => {
+    return async (id) => {
+        const { error } = await supabaseClient
+            .from('Category')
+            .update({ deleted: true })
+            .eq('id', id);
+    }
+}
+
+const saveCategory = (dispath) => {
+    return async (category, navigation) => {
+        const { error } = await supabaseClient
+            .from('Category')
+            .update({ name: category.name })
+            .eq('id', category.id);
+
+        navigation.goBack();
+    }
+}
+
+const createCategory = (dispath) => {
+    return async (name, navigation) => {
+        const userId = (await supabaseClient.auth.getUser()).data.user.id;
+
+        const { error } = await supabaseClient
+            .from('Category')
+            .insert({ name: name, user_id: userId });
+
+            console.log(error);
+
+        navigation.goBack();
+    }
+}
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { getCategories },
+    { getCategories, deleteCategory, saveCategory, createCategory },
     { data: [], errorMessage: null });
 
