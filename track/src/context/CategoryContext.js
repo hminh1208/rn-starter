@@ -17,9 +17,6 @@ const getCategories = (dispath) => {
             .select()
             .eq('deleted', false);
 
-        console.log(error);
-        console.log(data);
-
         dispath({
             type: "GET_ALL_CATEGORY",
             payload: { data: data ?? [], errorMessage: error?.message }
@@ -54,8 +51,6 @@ const createCategory = (dispath) => {
         const { error } = await supabaseClient
             .from('Category')
             .insert({ name: name, user_id: userId });
-
-            console.log(error);
 
         navigation.goBack();
     }

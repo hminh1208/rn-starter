@@ -12,13 +12,17 @@ import { Text } from 'react-native-elements';
 
 import Spacer from '../components/spacer';
 import { Context as CategoryContext } from '../context/CategoryContext';
+import { Context as TransactionContext } from '../context/TransactionContext';
 
 const HomeScreen = ({ navigation }) => {
-    const { state, getCategories } = useContext(CategoryContext);
+    const { state: categories, getCategories } = useContext(CategoryContext);
+    const { state: transactions, getTransactions } = useContext(TransactionContext);
 
     useEffect(() => {
         const listener = navigation.addListener("focus", () => {
             getCategories();
+
+            getTransactions();
         });
         return listener;
     }, []);
@@ -29,12 +33,12 @@ const HomeScreen = ({ navigation }) => {
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={[styles.bgYellow, styles.summaryContainer]} onPress={() => { navigation.push('Category') }}>
                         <Text h4 style={{ marginTop: 10, marginLeft: 10, color: 'black' }}>Category</Text>
-                        <Text h4 style={{ marginRight: 10, color: 'black', textAlign: 'right', position: 'absolute', bottom: 10, right: 0 }}>{state.data.length}</Text>
+                        <Text h4 style={{ marginRight: 10, color: 'black', textAlign: 'right', position: 'absolute', bottom: 10, right: 0 }}>{categories?.data.length}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.bgRed, styles.summaryContainer]}>
+                    <TouchableOpacity style={[styles.bgRed, styles.summaryContainer]} onPress={() => { navigation.navigate('Transaction')}}>
                         <Text h4 style={{ marginTop: 10, marginLeft: 10, color: 'black' }}>Transaction</Text>
-                        <Text h4 style={{ marginRight: 10, color: 'black', textAlign: 'right', position: 'absolute', bottom: 10, right: 0 }}>{state.data.length}</Text>
+                        <Text h4 style={{ marginRight: 10, color: 'black', textAlign: 'right', position: 'absolute', bottom: 10, right: 0 }}>{transactions?.data.length}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row' }}>

@@ -12,7 +12,7 @@ import {
 
 import { Context as CategoryContext } from '../../context/CategoryContext';
 
-function CreateCategoryScreen({ route, navigation }) {
+function CreateCategoryScreen({ navigation }) {
     const { state, createCategory } = useContext(CategoryContext);
 
     const [name, setName] = useState('');

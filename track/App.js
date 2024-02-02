@@ -17,6 +17,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import supabaseClient from './src/api/SupabaseClient';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as CategoryProvider } from './src/context/CategoryContext';
+import {
+  Provider as TransactionProvider,
+} from './src/context/TransactionContext';
 import { setNavigator } from './src/navigationRef';
 import AccountScreen from './src/screens/auth/AccountScreen';
 import SignInScreen from './src/screens/auth/SignInScreen';
@@ -25,6 +28,8 @@ import CategoryScreen from './src/screens/category/CategoryScreen';
 import CreateCategoryScreen from './src/screens/category/CreateCategoryScreen';
 import EditCategoryScreen from './src/screens/category/EditCategoryScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import CreateTransactionScreen
+  from './src/screens/transaction/CreateTransactionScreen';
 import TransactionSceen from './src/screens/transaction/TransactionSceen';
 
 export default function App() {
@@ -52,9 +57,18 @@ export default function App() {
 			<Stack.Screen name="Category" component={CategoryScreen} />
 			<Stack.Screen name="EditCategory" component={EditCategoryScreen} options={{ headerShown: true, title: 'Edit category' }} />
 			<Stack.Screen name="CreateCategory" component={CreateCategoryScreen} options={{ headerShown: true, title: 'Create category' }} />
-			<Stack.Screen name="Transaction" component={TransactionSceen} />
 		</DashboardStack.Navigator>
 	}
+
+	const TransactionStack = createStackNavigator();
+	function TransactionTab() {
+		return <TransactionStack.Navigator screenOptions={{
+            headerShown: false
+        }}>
+            <Stack.Screen name="TransactionIndex" component={TransactionSceen} />
+            <Stack.Screen name="CreateTransaction" component={CreateTransactionScreen} />
+        </TransactionStack.Navigator>
+    }
 
 	function Home() {
 		return <Tab.Navigator>
@@ -70,7 +84,7 @@ export default function App() {
 
 			<Tab.Screen
 				name="Transaction"
-				component={TransactionSceen}
+				component={TransactionTab}
 				options={{
 					tabBarLabel: 'Transactions',
 					tabBarIcon: ({ color }) => (
@@ -92,7 +106,7 @@ export default function App() {
 	return (
 		<PopupRootProvider>
 			<AuthProvider>
-				<CategoryProvider>
+				<CategoryProvider><TransactionProvider>
 					<NavigationContainer ref={(navigator) => { setNavigator(navigator) }}>
 						{session && session.user ?
 							(<>
@@ -119,6 +133,8 @@ export default function App() {
 								</Stack.Navigator>
 							</>)}
 					</NavigationContainer>
+				</TransactionProvider>
+
 				</CategoryProvider>
 			</AuthProvider>
 		</PopupRootProvider>
