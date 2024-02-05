@@ -30,7 +30,7 @@ import {
 const TransactionScreen = ({ navigation }) => {
     const [fCategoryId, setFCategoryId] = useState(null);
 
-    const { state: categories, getTransactions } = useContext(TransactionContext);
+    const { state: categories, getTransactions, deleteTransaction } = useContext(TransactionContext);
 
     const [state, setState] = useState({
         startDate: moment().startOf('month'),
@@ -105,17 +105,21 @@ const TransactionScreen = ({ navigation }) => {
                 {
                     categories.data.filter(category => category.Transaction.length > 0).map((category) => {
                         return <View style={{ marginVertical: 10 }} key={category.id}>
-                            <Text h3 style={{ color: 'green', marginHorizontal: 15 }}>{category.name}</Text>
+                            <Text h3 style={{ color: category.is_income ? 'green' : 'red', marginHorizontal: 15 }}>{category.name}</Text>
 
                             <FlatList
                                 data={category.Transaction}
                                 scrollEnabled={false}
                                 keyExtractor={(item, index) => Math.random().toString()}
                                 renderItem={({ item }) => <>
-                                    <View style={{ flexDirection: 'row', borderColor: 'grey', borderWidth: 1, height: 70, justifyContent: 'space-between', marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
-                                        <Text h4 style={{ marginLeft: 10, color: 'black', paddingTop: 15 }}>{item.id} - {item.transaction_name} - {item.transaction_amount}đ</Text>
+                                    <View style={{ flexDirection: 'row', borderColor: 'grey', borderWidth: 1, height: 90, justifyContent: 'space-between', marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
+                                        <View style={{flexDirection: 'column'}}>
+                                        <Text h4 style={{ marginLeft: 10, color: 'black', paddingTop: 15 }}>{item.transaction_name}</Text>
+                                        <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 15 }}>{item.transaction_amount}đ</Text>
+                                        </View>
+                                        
 
-                                        <View style={{ flexDirection: 'row', paddingTop: 15, justifyContent: 'space-between', width: 90, paddingRight: 15 }} >
+                                        <View style={{ flexDirection: 'row', paddingTop: 15, justifyContent: 'space-between', width: 80, paddingRight: 15 }} >
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     navigation.navigate('EditTransaction', {
@@ -123,7 +127,7 @@ const TransactionScreen = ({ navigation }) => {
                                                     })
                                                 }}
                                             >
-                                                <Feather name='edit-2' size={30} color='orange' />
+                                                <Feather name='edit-2' size={25} color='orange' />
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
@@ -136,6 +140,7 @@ const TransactionScreen = ({ navigation }) => {
                                                         okButtonStyle: { backgroundColor: 'red' },
                                                         confirmText: 'Cancel',
                                                         callback: async () => {
+                                                            await deleteTransaction(item.id);
                                                             await getTransactions();
                                                             Popup.hide();
                                                         },
@@ -144,7 +149,7 @@ const TransactionScreen = ({ navigation }) => {
                                                         },
                                                     })
                                                 }>
-                                                <Feather name='trash' size={30} color='red' />
+                                                <Feather name='trash' size={25} color='red' />
                                             </TouchableOpacity>
                                         </View>
 

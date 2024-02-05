@@ -15,7 +15,9 @@ const getCategories = (dispath) => {
         const { data, error } = await supabaseClient
             .from('Category')
             .select()
-            .eq('deleted', false);
+            .eq('deleted', false)
+            .order('is_income', { ascending: false })
+            .order('name', { ascending: true });
 
         dispath({
             type: "GET_ALL_CATEGORY",
@@ -37,7 +39,7 @@ const saveCategory = (dispath) => {
     return async (category, navigation) => {
         const { error } = await supabaseClient
             .from('Category')
-            .update({ name: category.name })
+            .update({ name: category.name, is_income: category.is_income })
             .eq('id', category.id);
 
         navigation.goBack();
@@ -45,12 +47,12 @@ const saveCategory = (dispath) => {
 }
 
 const createCategory = (dispath) => {
-    return async (name, navigation) => {
+    return async (name, isIncome, navigation) => {
         const userId = (await supabaseClient.auth.getUser()).data.user.id;
 
         const { error } = await supabaseClient
             .from('Category')
-            .insert({ name: name, user_id: userId });
+            .insert({ name: name, is_income: isIncome, user_id: userId });
 
         navigation.goBack();
     }

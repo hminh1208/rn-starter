@@ -14,10 +14,9 @@ const getTransactions = (dispath) => {
     return async (fFromDate, fToDate, fCategoryId) => {
         let query = supabaseClient
             .from('Category')
-            .select('id, name, Transaction(*)')
-            .eq('deleted', false);
-
-        console.log(fFromDate, fToDate, fCategoryId);
+            .select('id, name, is_income, Transaction(*)')
+            .eq('deleted', false)
+            .eq('Transaction.deleted', false);
 
         if (fFromDate) {
             query = query.gte('Transaction.transaction_date', fFromDate.format("yyyy-MM-DD"))
@@ -47,18 +46,27 @@ const createTransaction = (dispatch) => {
     return async (transaction, navigation) => {
         const userId = (await supabaseClient.auth.getUser()).data.user.id;
 
-        const { data, error } = await supabaseClient
+        await supabaseClient
             .from('Transaction')
             .insert({ ...transaction, user_id: userId, deleted: false });
-
-        console.log(error);
 
         navigation.goBack();
     }
 }
 
+const deleteTransaction = (dispatch) => {
+    return async (id, navigation) => {
+        await supabaseClient
+            .from('Transaction')
+            .update({ deleted: true })
+            .eq('id', id);;
+    }
+}
+
+
+
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { getTransactions, createTransaction },
+    { getTransactions, createTransaction, deleteTransaction },
     { data: [], errorMessage: null });
 

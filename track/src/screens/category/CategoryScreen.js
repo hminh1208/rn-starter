@@ -50,7 +50,8 @@ const CategoryScreen = ({ navigation }) => {
                 keyExtractor={data => data.id}
                 renderItem={({ item }) => <>
                     <View style={{ flexDirection: 'row', borderColor: 'grey', borderWidth: 1, height: 70, justifyContent: 'space-between', marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
-                        <Text h4 style={{ marginLeft: 10, color: 'black', paddingTop: 15 }}>{item.name}</Text>
+
+                        <Text h4 style={{ marginLeft: 10, color: 'black', paddingTop: 15, color: item.is_income ? 'green' : 'red' }}>{item.name}</Text>
 
                         <View style={{ flexDirection: 'row', paddingTop: 15, justifyContent: 'space-between', width: 90, paddingRight: 15 }} >
                             <TouchableOpacity

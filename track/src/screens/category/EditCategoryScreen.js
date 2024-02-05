@@ -6,6 +6,7 @@ import React, {
 import { View } from 'react-native';
 import {
   Button,
+  CheckBox,
   Input,
   Text,
 } from 'react-native-elements';
@@ -19,6 +20,7 @@ function EditCategoryScreen({ route, navigation }) {
     const category = state.data.find(x => x.id === id);
 
     const [name, setName] = useState(category?.name);
+    const [ isIncome, setIsIncome] = React.useState(category?.is_income);
 
     return (
         <>
@@ -32,12 +34,21 @@ function EditCategoryScreen({ route, navigation }) {
                     autoCapitalize='none'
                     autoCorrect={false} />
 
+                <CheckBox
+                    title='Is Income'
+                    checked={isIncome}
+                    onPress={() => setIsIncome(!isIncome)}
+                    iconType="material-community"
+                    checkedIcon="checkbox-outline"
+                    uncheckedIcon={'checkbox-blank-outline'}
+                />
+
                 {state.errorMessage ? <Text h5 style={{ color: 'red', marginHorizontal: 10, fontSize: 16 }}>{state.errorMessage}</Text> : null}
 
                 <View style={{ marginHorizontal: 10 }}>
                     <Button
                         title='Update'
-                        onPress={() => saveCategory({ ...category, name: name }, navigation)} />
+                        onPress={() => saveCategory({ ...category, name: name, is_income: isIncome }, navigation)} />
                 </View>
 
             </View>
