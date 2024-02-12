@@ -27,7 +27,7 @@ const TransactionGroupByDate = ({ categories, navigation }) => {
                                 id: item.id
                             })
                         }}>
-                            <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 5, fontWeight: 'bold' }}>> {item.transaction_name}</Text>
+                            <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 5, fontWeight: 'bold' }}>{`> ${item.transaction_name}`}</Text>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text h5 style={{ color: categories.data.filter(x => x.id == item.category_id)[0].is_income ? 'green' : 'red', paddingTop: 10, marginLeft: 10 }}>{categories.data.filter(x => x.id == item.category_id)[0].name}</Text>
                                 <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 10 }}>{moment(item.transaction_date).format('DD/MM/yyyy')}</Text>
@@ -35,7 +35,7 @@ const TransactionGroupByDate = ({ categories, navigation }) => {
                             </View>
                         </TouchableOpacity>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 10, alignSelf:'center' }} >
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', right: 10, alignSelf: 'center' }} >
                             <TouchableOpacity
                                 onPress={() =>
                                     Popup.show({

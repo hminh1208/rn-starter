@@ -15,6 +15,7 @@ import {
 import DateRangePicker from 'react-native-daterange-picker';
 import { Dropdown } from 'react-native-element-dropdown';
 import {
+    Button,
     Divider,
     Text,
 } from 'react-native-elements';
@@ -24,12 +25,14 @@ import Spacer from '../../components/spacer';
 import {
     Context as TransactionContext,
 } from '../../context/TransactionContext';
+import { Context as CategoryContext } from '../../context/CategoryContext';
 import TransactionGroupByCategory from '../../components/transactions/TransactionGroupByCategory';
 import TransactionGroupByDate from '../../components/transactions/TransactionFlatList';
 
 const TransactionScreen = ({ navigation }) => {
     const [fCategoryId, setFCategoryId] = useState(null);
 
+    const { state: allCategories, getCategories } = useContext(CategoryContext);
     const { state: categories, getTransactions } = useContext(TransactionContext);
 
     const [state, setState] = useState({
@@ -45,12 +48,14 @@ const TransactionScreen = ({ navigation }) => {
     useEffect(() => {
         const listener = navigation.addListener("focus", () => {
             getTransactions();
+
+            getCategories();
         });
         return listener;
     }, []);
 
     return (
-        <ScrollView style={{ marginTop: 50 }}>
+        <ScrollView>
             <Spacer>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text h2>Transactions</Text>
@@ -85,7 +90,7 @@ const TransactionScreen = ({ navigation }) => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={categories.data}
+                    data={allCategories.data}
                     search
                     maxHeight={300}
                     labelField="name"
@@ -97,6 +102,14 @@ const TransactionScreen = ({ navigation }) => {
                         setFCategoryId(item.id);
                     }}
                 />
+            </View>
+
+            <View style={{ marginHorizontal: 15, marginVertical: 5 }}>
+                <Button
+                    title='Filter'
+                    onPress={() => {
+                        getTransactions(state.startDate, state.endDate, fCategoryId)
+                    }} />
             </View>
 
             <Divider />

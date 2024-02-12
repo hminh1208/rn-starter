@@ -25,7 +25,7 @@ const TransactionGroupByCategory = ({ categories, navigation }) => {
                             <View style={{ flexDirection: 'row', borderColor: 'grey', borderWidth: 1, height: 70, justifyContent: 'space-between', marginHorizontal: 15, marginVertical: 5, borderRadius: 10, backgroundColor: 'white', }}>
                                 <View style={{ flexDirection: 'column' }}>
                                     <Text h4 style={{ marginLeft: 10, color: 'black', paddingTop: 5 }}>{item.transaction_name}</Text>
-                                    <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 10 }}>{item.transaction_amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</Text>
+                                    <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 10 }}>{item.transaction_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'row', paddingTop: 10, justifyContent: 'space-between', width: 70, paddingRight: 15 }} >

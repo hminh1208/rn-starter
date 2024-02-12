@@ -21,7 +21,7 @@ const getCategories = (dispath) => {
 
         dispath({
             type: "GET_ALL_CATEGORY",
-            payload: { data: data ?? [], errorMessage: error?.message }
+            payload: { data: [{ id: null, name: 'All' }, ...data] ?? [{ id: null, name: 'All' }], errorMessage: error?.message }
         });
     }
 }
