@@ -1,36 +1,36 @@
 import React, {
-  useContext,
-  useEffect,
-  useState,
+    useContext,
+    useEffect,
+    useState,
 } from 'react';
 
 import moment from 'moment';
 import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
+    FlatList,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import DateRangePicker from 'react-native-daterange-picker';
 import { Dropdown } from 'react-native-element-dropdown';
 import {
-  Divider,
-  Text,
+    Divider,
+    Text,
 } from 'react-native-elements';
-import { Popup } from 'react-native-popup-confirm-toast';
-import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Spacer from '../../components/spacer';
 import {
-  Context as TransactionContext,
+    Context as TransactionContext,
 } from '../../context/TransactionContext';
+import TransactionGroupByCategory from '../../components/transactions/TransactionGroupByCategory';
+import TransactionGroupByDate from '../../components/transactions/TransactionFlatList';
 
 const TransactionScreen = ({ navigation }) => {
     const [fCategoryId, setFCategoryId] = useState(null);
 
-    const { state: categories, getTransactions, deleteTransaction } = useContext(TransactionContext);
+    const { state: categories, getTransactions } = useContext(TransactionContext);
 
     const [state, setState] = useState({
         startDate: moment().startOf('month'),
@@ -73,12 +73,12 @@ const TransactionScreen = ({ navigation }) => {
                 displayedDate={state.displayedDate}
                 range
             >
-                <View style={{ borderColor: 'grey', borderWidth: 1, height: 50, marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
-                    <Text h4 style={{ color: 'black', textAlign: 'center', marginTop: 10 }}>{state.startDate.format('YYYY-MM-DD')} - {state.endDate.format('YYYY-MM-DD')}</Text>
+                <View style={{ borderColor: 'grey', borderWidth: 1, height: 50, marginHorizontal: 15, marginVertical: 5, borderRadius: 10, backgroundColor: 'white' }}>
+                    <Text style={[{ color: 'black', textAlign: 'center', marginTop: 13 }, styles.placeholderStyle]}>{state.startDate?.format('YYYY-MM-DD')} - {state.endDate?.format('YYYY-MM-DD')}</Text>
                 </View>
             </DateRangePicker>
 
-            <View style={{ borderColor: 'grey', borderWidth: 1, height: 50, marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
+            <View style={{ borderColor: 'grey', borderWidth: 1, height: 50, marginHorizontal: 15, marginVertical: 5, borderRadius: 10, backgroundColor: 'white', }}>
                 <Dropdown
                     style={styles.dropdown}
                     placeholderStyle={styles.placeholderStyle}
@@ -101,68 +101,9 @@ const TransactionScreen = ({ navigation }) => {
 
             <Divider />
 
-            <>
-                {
-                    categories.data.filter(category => category.Transaction.length > 0).map((category) => {
-                        return <View style={{ marginVertical: 10 }} key={category.id}>
-                            <Text h3 style={{ color: category.is_income ? 'green' : 'red', marginHorizontal: 15 }}>{category.name}</Text>
+            {/* <TransactionGroupByCategory categories={categories} navigation={navigation} /> */}
 
-                            <FlatList
-                                data={category.Transaction}
-                                scrollEnabled={false}
-                                keyExtractor={(item, index) => Math.random().toString()}
-                                renderItem={({ item }) => <>
-                                    <View style={{ flexDirection: 'row', borderColor: 'grey', borderWidth: 1, height: 90, justifyContent: 'space-between', marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
-                                        <View style={{flexDirection: 'column'}}>
-                                        <Text h4 style={{ marginLeft: 10, color: 'black', paddingTop: 15 }}>{item.transaction_name}</Text>
-                                        <Text h5 style={{ marginLeft: 10, color: 'black', paddingTop: 15 }}>{item.transaction_amount}đ</Text>
-                                        </View>
-                                        
-
-                                        <View style={{ flexDirection: 'row', paddingTop: 15, justifyContent: 'space-between', width: 80, paddingRight: 15 }} >
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    navigation.navigate('EditTransaction', {
-                                                        id: item.id
-                                                    })
-                                                }}
-                                            >
-                                                <Feather name='edit-2' size={25} color='orange' />
-                                            </TouchableOpacity>
-
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    Popup.show({
-                                                        type: 'confirm',
-                                                        title: 'Delete',
-                                                        textBody: `Are you sure you want to delete "${item.transaction_name}" ?`,
-                                                        buttonText: 'Delete',
-                                                        okButtonStyle: { backgroundColor: 'red' },
-                                                        confirmText: 'Cancel',
-                                                        callback: async () => {
-                                                            await deleteTransaction(item.id);
-                                                            await getTransactions();
-                                                            Popup.hide();
-                                                        },
-                                                        cancelCallback: () => {
-                                                            Popup.hide();
-                                                        },
-                                                    })
-                                                }>
-                                                <Feather name='trash' size={25} color='red' />
-                                            </TouchableOpacity>
-                                        </View>
-
-                                    </View>
-                                </>}
-                            />
-
-                            <Divider />
-                        </View>
-
-                    })
-                }
-            </>
+            <TransactionGroupByDate categories={categories} navigation={navigation} />
 
         </ScrollView>
     )

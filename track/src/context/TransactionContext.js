@@ -32,7 +32,7 @@ const getTransactions = (dispath) => {
 
         const { data, error } = await query;
 
-        console.log(data);
+        console.log(JSON.stringify(data, null, 2))
         console.log(error);
 
         dispath({
