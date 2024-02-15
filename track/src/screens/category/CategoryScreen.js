@@ -1,12 +1,13 @@
 import React, {
-  useContext,
-  useEffect,
+    useContext,
+    useEffect,
 } from 'react';
 
 import {
-  FlatList,
-  TouchableOpacity,
-  View,
+    FlatList,
+    SafeAreaView,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Popup } from 'react-native-popup-confirm-toast';
@@ -27,7 +28,7 @@ const CategoryScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <View style={{ marginTop: 50 }}>
+        <SafeAreaView>
             <Spacer>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text h2>Categories</Text>
@@ -38,7 +39,7 @@ const CategoryScreen = ({ navigation }) => {
                             })
                         }}
                     >
-                        <Ionicons name='add' size={30} color='red' />
+                        <Ionicons name='add' size={30} color='green' />
                     </TouchableOpacity>
 
                 </View>
@@ -46,7 +47,7 @@ const CategoryScreen = ({ navigation }) => {
             </Spacer>
 
             <FlatList
-                data={state.data}
+                data={state.data.filter(category => category.id != null)}
                 keyExtractor={data => data.id}
                 renderItem={({ item }) => <>
                     <View style={{ flexDirection: 'row', borderColor: 'grey', borderWidth: 1, height: 70, justifyContent: 'space-between', marginHorizontal: 15, marginVertical: 10, borderRadius: 10, backgroundColor: 'white', }}>
@@ -90,7 +91,7 @@ const CategoryScreen = ({ navigation }) => {
                     </View>
                 </>}
             />
-        </View>
+        </SafeAreaView>
     )
 }
 

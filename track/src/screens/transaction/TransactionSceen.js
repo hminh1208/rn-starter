@@ -20,6 +20,7 @@ import {
     Text,
 } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather'
 
 import Spacer from '../../components/spacer';
 import {
@@ -55,7 +56,7 @@ const TransactionScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <Spacer>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text h2>Transactions</Text>
@@ -66,7 +67,7 @@ const TransactionScreen = ({ navigation }) => {
                             })
                         }}
                     >
-                        <Ionicons name='add' size={30} color='red' />
+                        <Ionicons name='add' size={30} color='green' />
                     </TouchableOpacity>
                 </View>
             </Spacer>
@@ -83,29 +84,40 @@ const TransactionScreen = ({ navigation }) => {
                 </View>
             </DateRangePicker>
 
-            <View style={{ borderColor: 'grey', borderWidth: 1, height: 50, marginHorizontal: 15, marginVertical: 5, borderRadius: 10, backgroundColor: 'white', }}>
-                <Dropdown
-                    style={styles.dropdown}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={allCategories.data}
-                    search
-                    maxHeight={300}
-                    labelField="name"
-                    valueField="id"
-                    placeholder="Select category"
-                    searchPlaceholder="Search..."
-                    value={fCategoryId}
-                    onChange={item => {
-                        setFCategoryId(item.id);
-                    }}
-                />
+            <View style={{ height: 50, marginHorizontal: 15, marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flex: 6, borderColor: 'grey', borderWidth: 1, backgroundColor: 'white', borderRadius: 10, }}>
+                    <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={allCategories.data}
+                        search
+                        maxHeight={300}
+                        labelField="name"
+                        valueField="id"
+                        placeholder="Select category"
+                        searchPlaceholder="Search..."
+                        value={fCategoryId}
+                        onChange={item => {
+                            setFCategoryId(item.id);
+                        }}
+                    />
+                </View>
+
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }} onPress={() => {
+                        navigation.navigate("Category");
+                    }}>
+                        <Feather name='edit-2' size={25} color='orange' />
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <View style={{ marginHorizontal: 15, marginVertical: 5 }}>
                 <Button
+                    style={{ flex: 1 }}
                     title='Filter'
                     onPress={() => {
                         getTransactions(state.startDate, state.endDate, fCategoryId)
@@ -116,7 +128,9 @@ const TransactionScreen = ({ navigation }) => {
 
             {/* <TransactionGroupByCategory categories={categories} navigation={navigation} /> */}
 
-            <TransactionGroupByDate categories={categories} navigation={navigation} />
+            <View style={{flex: 1 }}>
+                <TransactionGroupByDate categories={categories} navigation={navigation} />
+            </View>
 
         </ScrollView>
     )
@@ -125,6 +139,7 @@ const TransactionScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     dropdown: {
         height: 50,
+        flex: 1
     },
     icon: {
         marginRight: 5,

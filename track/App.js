@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {
-  useEffect,
-  useState,
+	useEffect,
+	useState,
 } from 'react';
 
 import { Root as PopupRootProvider } from 'react-native-popup-confirm-toast';
 import MaterialCommunityIcons
-  from 'react-native-vector-icons/MaterialCommunityIcons';
+	from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
-  createMaterialBottomTabNavigator,
+	createMaterialBottomTabNavigator,
 } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,7 +18,7 @@ import supabaseClient from './src/api/SupabaseClient';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as CategoryProvider } from './src/context/CategoryContext';
 import {
-  Provider as TransactionProvider,
+	Provider as TransactionProvider,
 } from './src/context/TransactionContext';
 import { setNavigator } from './src/navigationRef';
 import AccountScreen from './src/screens/auth/AccountScreen';
@@ -29,7 +29,7 @@ import CreateCategoryScreen from './src/screens/category/CreateCategoryScreen';
 import EditCategoryScreen from './src/screens/category/EditCategoryScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CreateTransactionScreen
-  from './src/screens/transaction/CreateTransactionScreen';
+	from './src/screens/transaction/CreateTransactionScreen';
 import TransactionSceen from './src/screens/transaction/TransactionSceen';
 
 export default function App() {
@@ -54,21 +54,21 @@ export default function App() {
 			headerShown: false
 		}}>
 			<Stack.Screen name="Home" component={HomeScreen} />
-			<Stack.Screen name="Category" component={CategoryScreen} />
-			<Stack.Screen name="EditCategory" component={EditCategoryScreen} options={{ headerShown: true, title: 'Edit category' }} />
-			<Stack.Screen name="CreateCategory" component={CreateCategoryScreen} options={{ headerShown: true, title: 'Create category' }} />
 		</DashboardStack.Navigator>
 	}
 
 	const TransactionStack = createStackNavigator();
 	function TransactionTab() {
 		return <TransactionStack.Navigator screenOptions={{
-            headerShown: false
-        }}>
-            <Stack.Screen name="TransactionIndex" component={TransactionSceen} />
-            <Stack.Screen name="CreateTransaction" component={CreateTransactionScreen} />
-        </TransactionStack.Navigator>
-    }
+			headerShown: false
+		}}>
+			<Stack.Screen name="TransactionIndex" component={TransactionSceen} />
+			<Stack.Screen name="CreateTransaction" component={CreateTransactionScreen} />
+			<Stack.Screen name="Category" component={CategoryScreen} />
+			<Stack.Screen name="EditCategory" component={EditCategoryScreen} options={{ headerShown: true, title: 'Edit category' }} />
+			<Stack.Screen name="CreateCategory" component={CreateCategoryScreen} options={{ headerShown: true, title: 'Create category' }} />
+		</TransactionStack.Navigator>
+	}
 
 	function Home() {
 		return <Tab.Navigator>
